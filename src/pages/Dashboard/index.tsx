@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { addDays } from 'date-fns';
 import DayPicker, { DayModifiers } from 'react-day-picker';
 import { FiClock, FiPower } from 'react-icons/fi';
 import 'react-day-picker/lib/style.css';
 
 import logoImg from '../../assets/logo.svg';
 import { useAuth } from '../../hooks/auth';
+import api from '../../services/api';
+import getTodayOrNextBusinessDay from '../../utils/getTodayOrNextBusinessDay';
 import {
   Container,
   Header,
@@ -18,15 +19,6 @@ import {
   Section,
   Appointment,
 } from './styles';
-import api from '../../services/api';
-
-function getTodayOrNextBusinessDay() {
-  const today = new Date();
-  if (today.getDay() === 0) return addDays(today, 1);
-  if (today.getDay() === 6) return addDays(today, 2);
-
-  return today;
-}
 
 interface MonthAvailabilityItem {
   day: number;
