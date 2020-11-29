@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { addDays } from 'date-fns';
 import DayPicker, { DayModifiers } from 'react-day-picker';
 import { FiClock, FiPower } from 'react-icons/fi';
 
@@ -19,8 +20,17 @@ import {
   Appointment,
 } from './styles';
 
+function getTodayOrNextBusinessDay() {
+  const today = new Date();
+  if (today.getDay() === 0) return addDays(today, 1);
+  if (today.getDay() === 6) return addDays(today, 2);
+
+  return today;
+}
+
 const Dashboard: React.FC = () => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(getTodayOrNextBusinessDay());
+
   const { signOut, user } = useAuth();
 
   const handleDateChange = useCallback((day: Date, modifiers: DayModifiers) => {
